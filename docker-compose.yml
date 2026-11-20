@@ -1,24 +1,37 @@
 services:
-  api:
-    build: .
-    container_name: api-livres
+  api-livres:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: api-livres:1.0.0
+    container_name: api-livres-node
     ports:
       - "3000:3000"
     environment:
       - PORT=3000
-      - MONGO_URI=mongodb://mongo:27017/livresdb
+      - MONGO_URI=mongodb://mongo-livres:27017/livresdb
     depends_on:
-      - mongo
+      - mongo-livres
+    networks:
+      - livres-network
     restart: unless-stopped
 
-  mongo:
-    image: mongo:7
-    container_name: mongo-livres
+  mongo-livres:
+    image: mongo:8.0
+    container_name: api-livres-mongo
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db
+      - livres-mongo-data:/data/db
+    networks:
+      - livres-network
     restart: unless-stopped
 
+networks:
+  livres-network:
+    name: api-livres-network
+    driver: bridge
+
 volumes:
-  mongo-data:
+  livres-mongo-data:
+    name: api-livres-mongo-data

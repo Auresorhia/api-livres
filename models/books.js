@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const bookSchema = new mongoose.Schema({
+    id: {
+        type: Number,
+        required: true,
+        unique: true
+    },
     title: {
         type: String,
         required: true
@@ -9,11 +14,9 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    year: {
-        type: Number
-    },
-    genre: {
-        type: String
+    page: {
+        type: Number,
+        required: true
     }
 }, { timestamps: true });
 
